@@ -33,24 +33,21 @@ public class PMoonMod implements
         EditKeywordsSubscriber,
         PostInitializeSubscriber {
     public static ModInfo info;
-    public static String modID; //Edit your pom.xml to change this
+    public static String modID;
     static { loadModInfo(); }
     private static final String resourcesFolder = checkResourcesPath();
-    public static final Logger logger = LogManager.getLogger(modID); //Used to output to the console.
+    public static final Logger logger = LogManager.getLogger(modID);
 
-    //This is used to prefix the IDs of various objects like cards and relics,
-    //to avoid conflicts between different mods using the same name for things.
     public static String makeID(String id) {
         return modID + ":" + id;
     }
 
-    //This will be called by ModTheSpire because of the @SpireInitializer annotation at the top of the class.
     public static void initialize() {
         new PMoonMod();
     }
 
     public PMoonMod() {
-        BaseMod.subscribe(this); //This will make BaseMod trigger all the subscribers at their appropriate times.
+        BaseMod.subscribe(this);
         logger.info(modID + " subscribed to BaseMod.");
     }
 
@@ -68,23 +65,16 @@ public class PMoonMod implements
 
     /*----------Localization----------*/
 
-    //This is used to load the appropriate localization files based on language.
-    private static String getLangString()
-    {
+    private static String getLangString() {
         return Settings.language.name().toLowerCase();
     }
+
     private static final String defaultLanguage = "eng";
 
     public static final Map<String, KeywordInfo> keywords = new HashMap<>();
 
     @Override
     public void receiveEditStrings() {
-        /*
-            First, load the default localization.
-            Then, if the current language is different, attempt to load localization for that language.
-            This results in the default localization being used for anything that might be missing.
-            The same process is used to load keywords slightly below.
-        */
         loadLocalization(defaultLanguage); //no exception catching for default localization; you better have at least one that works.
         if (!defaultLanguage.equals(getLangString())) {
             try {
@@ -118,8 +108,7 @@ public class PMoonMod implements
     }
 
     @Override
-    public void receiveEditKeywords()
-    {
+    public void receiveEditKeywords() {
         Gson gson = new Gson();
         String json = Gdx.files.internal(localizationPath(defaultLanguage, "Keywords.json")).readString(String.valueOf(StandardCharsets.UTF_8));
         KeywordInfo[] keywords = gson.fromJson(json, KeywordInfo[].class);
@@ -158,18 +147,73 @@ public class PMoonMod implements
         return resourcesFolder + "/localization/" + lang + "/" + file;
     }
 
+
+    // Path
+
+    // Image Path
+
     public static String imagePath(String file) {
-        return resourcesFolder + "/images/" + file;
+        String separator = "/";
+        return resourcesFolder + separator + "images" + separator + file;
     }
+
     public static String characterPath(String file) {
-        return resourcesFolder + "/images/character/" + file;
+        String separator = "/";
+        return imagePath( "character" + separator + file);
     }
+
     public static String powerPath(String file) {
-        return resourcesFolder + "/images/powers/" + file;
+        String separator = "/";
+        return imagePath( "powers" + separator + file);
     }
+
     public static String relicPath(String file) {
-        return resourcesFolder + "/images/relics/" + file;
+        String separator = "/";
+        return imagePath( "relics" + separator + file);
     }
+
+    public static String eventPath(String file) {
+        String separator = "/";
+        return imagePath( "events" + separator + file);
+    }
+
+    public static String monsterPath(String file) {
+        String separator = "/";
+        return imagePath( "monsters" + separator + file);
+    }
+
+    public static String backgroundPath(String file) {
+        String separator = "/";
+        return imagePath( "background" + separator + file);
+    }
+
+    public static String otherPath(String file) {
+        String separator = "/";
+        return imagePath( "other" + separator + file);
+    }
+
+    // End. Image Path
+
+    // Audio Path
+
+    public static String audioPath(String file) {
+        String separator = "/";
+        return resourcesFolder + separator + "audio" + separator + file;
+    }
+
+    public static String bgmPath(String file) {
+        String separator = "/";
+        return audioPath( "bgm" + separator + file);
+    }
+
+    public static String sndPath(String file) {
+        String separator = "/";
+        return audioPath( "snd" + separator + file);
+    }
+
+    // End. Audio Path
+
+    // End. Path
 
     /**
      * Checks the expected resources path based on the package name.
