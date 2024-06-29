@@ -1,5 +1,6 @@
 package PMoonMod;
 
+import PMoonMod.util.DangerLevel;
 import basemod.BaseMod;
 import basemod.interfaces.EditKeywordsSubscriber;
 import basemod.interfaces.EditStringsSubscriber;
@@ -149,6 +150,34 @@ public class PMoonMod implements
 
 
     // Path
+
+    public String addDangerLevelPath(String file, DangerLevel dangerLevel) {
+        String separator = "/";
+        String modyf;
+
+        switch (dangerLevel) {
+            case ZAYIN:
+                modyf = "ZAYIN";
+                break;
+            case TETH:
+                modyf = "TETH";
+                break;
+            case HE:
+                modyf = "HE";
+                break;
+            case WAW:
+                modyf = "WAW";
+                break;
+            case ALEPH:
+                modyf = "ALEPH";
+                break;
+            case DEFAULT:
+            default:
+                modyf = "DEFAULT";
+        }
+
+        return modyf + separator + file;
+    }
 
     // Image Path
 
