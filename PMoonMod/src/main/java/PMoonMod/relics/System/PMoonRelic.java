@@ -1,6 +1,7 @@
 package PMoonMod.relics.System;
 
 import PMoonMod.PMoonMod;
+import PMoonMod.relics.BaseRelic;
 import PMoonMod.util.DangerLevel;
 import com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction;
 import com.megacrit.cardcrawl.core.AbstractCreature;
@@ -15,7 +16,11 @@ import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import static PMoonMod.PMoonMod.makeID;
+
 public abstract class PMoonRelic extends BaseRelic {
+
+    private static final int DEFAULT_MAX_LEVEL = 0;
 
     public DangerLevel  dangerLevel;
     public int          level;
@@ -26,10 +31,10 @@ public abstract class PMoonRelic extends BaseRelic {
 
     public PMoonRelic(String id, String imageName, RelicTier tier, DangerLevel dangerLevel, LandingSound sfx) {
 
-        super(id, PMoonMod.addDangerLevelPath(imageName, dangerLevel), tier, sfx);
+        super(makeID(id), PMoonMod.addDangerLevelPath(imageName, dangerLevel), tier, sfx);
 
         this.level =        0;
-        this.maxLevel =     0;
+        this.maxLevel =     DEFAULT_MAX_LEVEL;
         this.dangerLevel =  dangerLevel;
     }
 
@@ -40,6 +45,19 @@ public abstract class PMoonRelic extends BaseRelic {
     }
 
     public void onActivationInFight() {
+    }
+
+    public void upgrade() {
+
+    }
+
+    public String getUpdatedDescription(int index) {
+        return "";
+    }
+
+    @Override
+    public String getUpdatedDescription() {
+        return getUpdatedDescription(0);
     }
 
     @Override
@@ -104,6 +122,13 @@ public abstract class PMoonRelic extends BaseRelic {
         }
     }
 
+    protected int debuffsNumb(AbstractCreature target) {
+
+        ArrayList<AbstractPower> debuffs = getDebuffs(target);
+
+        return debuffs.size();
+    }
+
     protected void clearRandomDebuff(AbstractCreature target) {
 
         ArrayList<AbstractPower> debuffs = getDebuffs(target);
@@ -121,6 +146,13 @@ public abstract class PMoonRelic extends BaseRelic {
         for (AbstractPower buff : buffs) {
             addToTop(new RemoveSpecificPowerAction(target, target, buff.ID));
         }
+    }
+
+    protected int buffsNumb(AbstractCreature target) {
+
+        ArrayList<AbstractPower> buffs = getBuffs(target);
+
+        return buffs.size();
     }
 
     protected void clearRandomBuff(AbstractCreature target) {
@@ -147,8 +179,25 @@ public abstract class PMoonRelic extends BaseRelic {
         this.tips.add(new PowerTip(this.name, this.description));
     }
 
-    protected void addDescription() {
+    protected String[] getUpdatedDescriptions() {
+
+        String[] res = new String[DESCRIPTIONS.length];
+
+        for ( int i = 0; i < DESCRIPTIONS.length; i++) {
+            res[i] = getUpdatedDescription(i);
+        }
+
+        return res;
+    }
+
+    protected void addDescription(String description) {
         this.tips.add(new PowerTip(this.name, description));
+    }
+
+    protected void updateDescription(String description, int index) {
+
+        PowerTip tip = this.tips.get(index);
+        tip.body = description;
     }
 
     protected void updateAllDescriptions(String[] descriptions) {
@@ -163,12 +212,6 @@ public abstract class PMoonRelic extends BaseRelic {
         this.description = description;
         updateDescription(description, 0);
         initializeTips();
-    }
-
-    protected void updateDescription(String description, int index) {
-
-        PowerTip tip = this.tips.get(index);
-        tip.body = description;
     }
 
     private void updateActivationRelic() {
