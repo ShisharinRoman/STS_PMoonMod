@@ -1,8 +1,11 @@
 package PMoonMod;
 
+import PMoonMod.relics.BaseRelic;
 import PMoonMod.util.DangerLevel;
+import basemod.AutoAdd;
 import basemod.BaseMod;
 import basemod.interfaces.EditKeywordsSubscriber;
+import basemod.interfaces.EditRelicsSubscriber;
 import basemod.interfaces.EditStringsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import PMoonMod.util.GeneralUtils;
@@ -21,6 +24,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.localization.*;
+import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.scannotation.AnnotationDB;
@@ -32,6 +36,7 @@ import java.util.*;
 public class PMoonMod implements
         EditStringsSubscriber,
         EditKeywordsSubscriber,
+        EditRelicsSubscriber,
         PostInitializeSubscriber {
     public static ModInfo info;
     public static String modID;
@@ -50,6 +55,23 @@ public class PMoonMod implements
     public PMoonMod() {
         BaseMod.subscribe(this);
         logger.info(modID + " subscribed to BaseMod.");
+    }
+
+    @Override
+    public void receiveEditRelics() { //somewhere in the class
+        new AutoAdd(modID) //Loads files from this mod
+                .packageFilter(BaseRelic.class) //In the same package as this class
+                .any(BaseRelic.class, (info, relic) -> { //Run this code for any classes that extend this class
+                    if (relic.pool != null)
+                        BaseMod.addRelicToCustomPool(relic, relic.pool); //Register a custom character specific relic
+                    else
+                        BaseMod.addRelic(relic, relic.relicType); //Register a shared or base game character specific relic
+
+                    //If the class is annotated with @AutoAdd.Seen, it will be marked as seen, making it visible in the relic library.
+                    //If you want all your relics to be visible by default, just remove this if statement.
+
+                    UnlockTracker.markRelicAsSeen(relic.relicId);
+                });
     }
 
     @Override

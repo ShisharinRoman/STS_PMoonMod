@@ -1,4 +1,4 @@
-package PMoonMod.relics.System;
+package PMoonMod.relics;
 
 import basemod.abstracts.CustomRelic;
 import basemod.helpers.RelicType;
