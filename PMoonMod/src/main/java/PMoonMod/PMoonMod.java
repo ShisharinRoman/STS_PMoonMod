@@ -151,7 +151,7 @@ public class PMoonMod implements
 
     // Path
 
-    public String addDangerLevelPath(String file, DangerLevel dangerLevel) {
+    public static String addDangerLevelPath(String file, DangerLevel dangerLevel) {
         String separator = "/";
         String modyf;
 
