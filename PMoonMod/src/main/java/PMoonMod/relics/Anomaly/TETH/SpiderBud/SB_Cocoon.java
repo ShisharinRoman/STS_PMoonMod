@@ -1,5 +1,7 @@
 package PMoonMod.relics.Anomaly.TETH.SpiderBud;
 
+import PMoonMod.powers.Default.Flimsiness;
+import PMoonMod.powers.Default.Paralysis;
 import PMoonMod.relics.System.PMoonRelic;
 import PMoonMod.util.DangerLevel;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
@@ -33,8 +35,8 @@ public class SB_Cocoon extends PMoonRelic
 
         AbstractPlayer player = AbstractDungeon.player;
 
-        // TODO Paralysis power
-        // TODO Fragile
+        addToTop(new ApplyPowerAction(target, player, new Paralysis(target, PARALYZE_AMT)));
+        addToTop(new ApplyPowerAction(target, player, new Flimsiness(target, FRAGILE_AMT)));
 
         flash();
     }

@@ -1,7 +1,9 @@
 package PMoonMod.relics.Anomaly.TETH.ScorchedGirl;
 
+import PMoonMod.powers.Default.Burn;
 import PMoonMod.relics.System.PMoonRelic;
 import PMoonMod.util.DangerLevel;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 
@@ -25,7 +27,7 @@ public class SG_Match extends PMoonRelic
     }
 
     private Void effectToMonster(AbstractMonster m) {
-        // TODO Burn power
+        addToTop(new ApplyPowerAction(m, null, new Burn(m, BURN_AMT)));
         return null;
     }
 

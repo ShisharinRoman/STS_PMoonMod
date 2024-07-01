@@ -1,7 +1,9 @@
 package PMoonMod.relics.Anomaly.TETH.OldLady;
 
+import PMoonMod.powers.Default.Sinking;
 import PMoonMod.relics.System.PMoonRelic;
 import PMoonMod.util.DangerLevel;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 
 public class OL_BatteredHat extends PMoonRelic
@@ -24,7 +26,7 @@ public class OL_BatteredHat extends PMoonRelic
     }
 
     private Void effectToMonster(AbstractMonster m) {
-        // TODO Sinking
+        addToTop(new ApplyPowerAction(m, null, new Sinking(m, SINKING_AMT)));
         return null;
     }
 

@@ -1,7 +1,9 @@
 package PMoonMod.relics.Anomaly.TETH.FragmentOfTheUniverse;
 
+import PMoonMod.powers.Default.Sinking;
 import PMoonMod.relics.System.PMoonRelic;
 import PMoonMod.util.DangerLevel;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 
@@ -33,14 +35,14 @@ public class FU_Echo extends PMoonRelic
 
             if ( i == monstersSize - 1) {
 
-                // TODO Sinking
-
+                addToTop(new ApplyPowerAction(monster, null, new Sinking(monster, sinkingMax)));
                 break;
+
             } else {
+
                 int sinking = AbstractDungeon.relicRng.random(0, sinkingMax);
                 sinkingMax -= sinking;
-
-                // TODO Sinking
+                addToTop(new ApplyPowerAction(monster, null, new Sinking(monster, sinking)));
 
             }
 

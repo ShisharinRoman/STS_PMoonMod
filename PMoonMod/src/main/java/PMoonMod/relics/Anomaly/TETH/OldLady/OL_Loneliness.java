@@ -1,7 +1,9 @@
 package PMoonMod.relics.Anomaly.TETH.OldLady;
 
+import PMoonMod.powers.Default.Sinking;
 import PMoonMod.relics.System.PMoonRelic;
 import PMoonMod.util.DangerLevel;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 
@@ -24,8 +26,8 @@ public class OL_Loneliness extends PMoonRelic
     @Override
     public void atTurnStart() {
 
-        ArrayList<AbstractMonster> monsters = AbstractDungeon.getMonsters().monsters;
-        AbstractMonster liveMonster;
+        ArrayList<AbstractMonster> monsters =   AbstractDungeon.getMonsters().monsters;
+        AbstractMonster liveMonster =           null;
 
         int numbLiveMonsters = 0;
 
@@ -37,7 +39,7 @@ public class OL_Loneliness extends PMoonRelic
         }
 
         if (numbLiveMonsters == MAX_LIVE_MONSTERS ) {
-            // TODO Sinking
+            addToTop(new ApplyPowerAction(liveMonster, null, new Sinking(liveMonster, SINKING_AMT)));
             flash();
         }
     }

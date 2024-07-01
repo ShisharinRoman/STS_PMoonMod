@@ -1,7 +1,9 @@
 package PMoonMod.relics.Anomaly.TETH.WomanFacingTheWall;
 
+import PMoonMod.powers.Default.Sinking;
 import PMoonMod.relics.System.PMoonRelic;
 import PMoonMod.util.DangerLevel;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -32,8 +34,9 @@ public class WFW_Mumbling extends PMoonRelic
         if ( chance <= CHANCE_TO_ACTIVATE) {
             AbstractPlayer player = AbstractDungeon.player;
 
-            // TODO Paralyse
-            // TODO Sinking
+            addToTop(new ApplyPowerAction(info.owner, player, new Sinking(info.owner, SINKING_AMT_TO_TARGET)));
+            addToTop(new ApplyPowerAction(info.owner, player, new Sinking(info.owner, PARALYSIS_AMT_TO_TARGET)));
+            addToTop(new ApplyPowerAction(player, null, new Sinking(info.owner, SINKING_AMT_TO_PLAYER)));
 
             flash();
         }

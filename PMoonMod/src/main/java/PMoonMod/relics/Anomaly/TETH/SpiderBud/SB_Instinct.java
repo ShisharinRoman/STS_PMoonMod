@@ -1,7 +1,9 @@
 package PMoonMod.relics.Anomaly.TETH.SpiderBud;
 
+import PMoonMod.powers.Default.Endurance;
 import PMoonMod.relics.System.PMoonRelic;
 import PMoonMod.util.DangerLevel;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -30,8 +32,7 @@ public class SB_Instinct extends PMoonRelic
     public void atTurnStart() {
 
         AbstractPlayer player = AbstractDungeon.player;
-        // TODO Protection
-
+        addToTop(new ApplyPowerAction(player, null, new Endurance(player, counter)));
         counter = 0;
     }
 

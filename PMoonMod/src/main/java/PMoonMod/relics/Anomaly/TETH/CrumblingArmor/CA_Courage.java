@@ -1,5 +1,6 @@
 package PMoonMod.relics.Anomaly.TETH.CrumblingArmor;
 
+import PMoonMod.powers.Default.Flimsiness;
 import PMoonMod.relics.System.PMoonRelic;
 import PMoonMod.util.DangerLevel;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
@@ -33,12 +34,14 @@ public class CA_Courage extends PMoonRelic
     @Override
     public void atBattleStart() {
         AbstractPlayer player = AbstractDungeon.player;
-        addToTop(new ApplyPowerAction(player, player, new StrengthPower(player, strengthAmt)));
+        addToTop(new ApplyPowerAction(player, null, new StrengthPower(player, strengthAmt)));
     }
 
     @Override
     public void atTurnStart() {
-        // TODO Fragile
+
+        AbstractPlayer player = AbstractDungeon.player;
+        addToTop(new ApplyPowerAction(player, null, new Flimsiness(player, fragileAmt)));
     }
 
     @Override

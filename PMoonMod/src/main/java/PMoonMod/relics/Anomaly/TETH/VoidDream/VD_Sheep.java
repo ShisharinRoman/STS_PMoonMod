@@ -1,7 +1,9 @@
 package PMoonMod.relics.Anomaly.TETH.VoidDream;
 
+import PMoonMod.powers.Default.Sinking;
 import PMoonMod.relics.System.PMoonRelic;
 import PMoonMod.util.DangerLevel;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -46,7 +48,11 @@ public class VD_Sheep extends PMoonRelic
     }
 
     private Void effectToMonster(AbstractMonster m) {
-        // TODO Sinking
+
+        int sinking = AbstractDungeon.relicRng.random(MIN_SINKING_AMT,MAX_SINKING_AMT);
+
+        addToTop(new ApplyPowerAction(m, null, new Sinking(m, sinking)));
+
         return null;
     }
 
