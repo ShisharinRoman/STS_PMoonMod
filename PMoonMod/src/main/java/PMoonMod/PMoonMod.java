@@ -1,5 +1,6 @@
 package PMoonMod;
 
+import PMoonMod.events.PMoonPhasedEvent;
 import PMoonMod.events.System.SaveSystemEvent;
 import PMoonMod.relics.BaseRelic;
 import PMoonMod.util.DangerLevel;
@@ -58,6 +59,14 @@ public class PMoonMod implements
         logger.info(modID + " subscribed to BaseMod.");
     }
 
+    public void receiveEvents() {
+        new AutoAdd(modID)
+                .packageFilter(PMoonPhasedEvent.class)
+                .any(PMoonPhasedEvent.class, (info, event) -> {
+                    BaseMod.addEvent(event.id, event.getClass());
+                });
+    }
+
     @Override
     public void receiveEditRelics() { //somewhere in the class
         new AutoAdd(modID) //Loads files from this mod
@@ -80,6 +89,7 @@ public class PMoonMod implements
 
         Texture badgeTexture = TextureLoader.getTexture(imagePath("badge.png"));
 
+        receiveEvents();
         initializeSave();
 
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, null);
