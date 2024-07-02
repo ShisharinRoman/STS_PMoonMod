@@ -1,5 +1,6 @@
 package PMoonMod;
 
+import PMoonMod.events.System.SaveSystemEvent;
 import PMoonMod.relics.BaseRelic;
 import PMoonMod.util.DangerLevel;
 import basemod.AutoAdd;
@@ -76,13 +77,11 @@ public class PMoonMod implements
 
     @Override
     public void receivePostInitialize() {
-        //This loads the image used as an icon in the in-game mods menu.
-        Texture badgeTexture = TextureLoader.getTexture(imagePath("badge.png"));
-        //Set up the mod information displayed in the in-game mods menu.
-        //The information used is taken from your pom.xml file.
 
-        //If you want to set up a config panel, that will be done here.
-        //The Mod Badges page has a basic example of this, but setting up config is overall a bit complex.
+        Texture badgeTexture = TextureLoader.getTexture(imagePath("badge.png"));
+
+        initializeSave();
+
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, null);
     }
 
@@ -169,7 +168,6 @@ public class PMoonMod implements
     public static String localizationPath(String lang, String file) {
         return resourcesFolder + "/localization/" + lang + "/" + file;
     }
-
 
     // Path
 
@@ -265,6 +263,10 @@ public class PMoonMod implements
     // End. Audio Path
 
     // End. Path
+
+    private void initializeSave() {
+        SaveSystemEvent.initializeSave();
+    }
 
     /**
      * Checks the expected resources path based on the package name.
