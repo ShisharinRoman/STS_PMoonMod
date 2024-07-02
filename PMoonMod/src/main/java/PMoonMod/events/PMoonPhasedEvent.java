@@ -20,18 +20,17 @@ public abstract class PMoonPhasedEvent extends PhasedEvent {
 
         if (!CardCrawlGame.isInARun()) return;
 
-        this.eventImageName = PMoonMod.eventPath(eventImageName);
+        this.eventImageName = eventImageName;
         this.encounters = encounters;
 
         initializeStrings();
-        initializeEvent();
     }
 
     protected void initializeStrings() {
     }
 
     protected void initializeEvent() {
-        this.title =            NAMES[0];
+        this.title = NAMES[0];
     }
 
     protected void playDefaultBgm() {

@@ -47,6 +47,10 @@ public final class SaveSystemEvent {
         return res;
     }
 
+    public static void setResearch(String id, int index) {
+        setResearch(id, index, true);
+    }
+
     public static void setResearch(String id, int index, Boolean research) {
         researches.put(researchId(id, index), research);
     }

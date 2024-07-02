@@ -5,14 +5,15 @@ import basemod.abstracts.events.phases.TextPhase;
 import PMoonMod.events.System.EventAnomalyStrings;
 import PMoonMod.localization.LocalizedStringsPatch;
 import PMoonMod.events.System.SaveSystemEvent;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 
 public abstract class PMoonAnomalyEvent extends PMoonPhasedEvent {
 
     protected enum DefaultPhases {
         START,
+        LEAVE,
         ANOMALY_LOG,
-        ENTER_CAMERA,
-        LEAVE
+        ENTER_CAMERA
     }
 
     protected enum DefaultOptions {
@@ -35,13 +36,22 @@ public abstract class PMoonAnomalyEvent extends PMoonPhasedEvent {
     protected boolean   isForceEnterCamera =    false;
 
     private EventAnomalyStrings eventAnomalyStrings;
-    protected String[]          NAMES;
     protected String[]          ANOMALY_LOGS;
     public String[]             DEFAULT_DESCRIPTIONS;
     public String[]             DEFAULT_OPTIONS;
 
     public PMoonAnomalyEvent(String ID, String eventImageName, String[] encounters) {
+        this(ID, eventImageName, 0, encounters);
+    }
+
+    public PMoonAnomalyEvent(String ID, String eventImageName, int researchesCount, String[] encounters) {
         super(ID, eventImageName, encounters);
+
+        if (!CardCrawlGame.isInARun()) return;
+
+        this.researchesCount = researchesCount;
+
+        initializeEvent();
     }
 
     @Override
@@ -62,6 +72,8 @@ public abstract class PMoonAnomalyEvent extends PMoonPhasedEvent {
 
     @Override
     protected void initializeEvent() {
+
+        super.initializeEvent();
 
         loadResearches();
         changeImageDefault();
@@ -84,7 +96,7 @@ public abstract class PMoonAnomalyEvent extends PMoonPhasedEvent {
 
     @Override
     protected void changeImageDefault() {
-        changeImage("events/LobotomyDefault.png");
+        changeImage("LobotomyDefault.png");
     }
 
     protected void loadResearches() {
@@ -126,6 +138,8 @@ public abstract class PMoonAnomalyEvent extends PMoonPhasedEvent {
                 new TextPhase(DEFAULT_DESCRIPTIONS[DefaultDescriptions.LEAVE.ordinal()]).
                         addOption(DEFAULT_OPTIONS[DefaultOptions.OPEN_MAP.ordinal()], (i)->onOpenMap())
         );
+
+        if (encounters == null) return;
 
         for (String encounter : encounters) {
             registerPhase(
