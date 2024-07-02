@@ -10,7 +10,9 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 public abstract class PMoonPhasedEvent extends PhasedEvent {
 
     protected String            eventImageName;
-    protected String[]          names;
+    protected String[]          NAMES;
+    protected String[]          DESCRIPTIONS;
+    protected String[]          OPTIONS;
     protected String[]          encounters;
 
     public PMoonPhasedEvent(String ID, String eventImageName, String[] encounters) {
@@ -29,7 +31,7 @@ public abstract class PMoonPhasedEvent extends PhasedEvent {
     }
 
     protected void initializeEvent() {
-        this.title =            names[0];
+        this.title =            NAMES[0];
     }
 
     protected void playDefaultBgm() {
@@ -49,7 +51,7 @@ public abstract class PMoonPhasedEvent extends PhasedEvent {
     }
 
     protected void changeName(int index) {
-        this.title = names[index];
+        this.title = NAMES[index];
     }
 
     protected void giveRelicWithChoice(AbstractRelic relic) {
